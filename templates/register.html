@@ -1,0 +1,54 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Sign Up</title>
+  <style>
+    body { margin:0; min-height:100vh; display:flex; align-items:center; justify-content:center;
+      background:#0f172a; font-family:sans-serif; color:#e5e7eb; }
+    .card { width:100%; max-width:380px; background:#1e293b; padding:30px; border-radius:16px;
+      box-shadow:0 8px 30px rgba(0,0,0,0.5); }
+    h1 { margin:0 0 10px; font-size:24px; font-weight:600; }
+    p { margin:0 0 20px; font-size:14px; color:#9ca3af; }
+    label { font-size:13px; margin-bottom:6px; display:block; }
+    input { width:100%; padding:12px; margin-bottom:15px; border:none; border-radius:8px;
+      background:#0b1220; color:#e5e7eb; }
+    input:focus { outline:2px solid #3b82f6; }
+    .btn { width:100%; padding:12px; border:none; border-radius:8px; background:#16a34a;
+      color:white; font-weight:600; cursor:pointer; transition:.2s; }
+    .btn:hover { background:#15803d; }
+    .err { margin-bottom:15px; background:#dc2626; color:white; padding:10px; border-radius:8px; font-size:13px; }
+    .helper { text-align:center; font-size:13px; margin-top:14px; color:#9ca3af; }
+    a { color:#60a5fa; text-decoration:none; }
+    a:hover { text-decoration:underline; }
+  </style>
+</head>
+<body>
+  <main class="card">
+    <h1>Create Account</h1>
+    <p>Join us by filling in your details</p>
+
+    <form method="post">
+    {% csrf_token %}
+
+    <label for="id_username">Username</label>
+    <input type="text" name="username" id="id_username" required>
+
+    <label for="id_password1">Password</label>
+    <input type="password" name="password1" id="id_password1" required>
+
+    <label for="id_password2">Confirm Password</label>
+    <input type="password" name="password2" id="id_password2" required>
+
+    <button class="btn" type="submit">Sign up</button>
+  </form>
+
+
+    <div class="helper">
+      Already have an account? <a href="{% url 'login' %}">Login here</a>
+    </div>
+  </main>
+</body>
+</html>

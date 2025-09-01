@@ -1,0 +1,85 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>CATALOG | Yug's Library</title> 
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+  </head>
+  <body>
+    
+    <!-- Navbar -->
+    <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+      <div class="container-fluid">
+        <a class="navbar-brand" href="#">Library</a>
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" 
+          aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+          <span class="navbar-toggler-icon"></span>
+        </button>
+        
+        <div class="collapse navbar-collapse" id="navbarNav">
+          <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+            <li class="nav-item">
+              <a class="nav-link active" href="{% url 'home' %}">Home</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="{% url 'user_dashboard' %}">My Dashboard</a>
+            </li>
+          </ul>
+
+          <!-- Search form -->
+          <form class="d-flex" role="search" method="GET" action="{% url 'catalog' %}">
+            <input class="form-control me-2" type="search" name="q" placeholder="Search by title" value="{{ query }}">
+            <button class="btn btn-outline-success" type="submit">Search</button>
+          </form>
+        </div>
+      </div>
+    </nav>
+
+    <div class="container my-3">
+        <h1 class="my-4 text-center">Browse Books</h1>
+        <div class="row">
+          {% for book in books %}
+            <div class="col-md-4">
+              <div class="card mb-4 shadow-sm">
+                <img src="{% if book.thumbnail %}{{ book.thumbnail.url }}{% else %}/static/thumbnail/default.jpg{% endif %}" 
+                     class="card-img-top" alt="{{ book.title }}">
+                <div class="card-body">
+                  <p class="card-text">
+                    <strong>Title:</strong> {{ book.title }}<br>
+                    <strong>Author:</strong> {{ book.author }}<br>
+                    <strong>Category:</strong> {{ book.category }}<br>
+                    <strong>Availability:</strong> 
+                      {% if book.is_available %}
+                        <span class="text-success">Available</span>
+                      {% else %}
+                        <span class="text-danger">Not Available</span>
+                      {% endif %}
+                  </p>
+
+                  <!-- Borrow / Reserve buttons -->
+                  <div class="d-flex justify-content-between align-items-center">
+                    <div class="btn-group">
+                      {% if book.is_available %}
+                        <a href="{% url 'borrow_book' book.id %}" class="btn btn-primary btn-sm">Borrow</a>
+                      {% else %}
+                        <a href="{% url 'reserve_book' book.id %}" class="btn btn-warning btn-sm">Reserve</a>
+                      {% endif %}
+                      <a href="#" class="btn btn-secondary btn-sm">View</a>
+                    </div>
+                    <small class="text-muted">Pages: {{ book.pages }}</small>
+                  </div>
+
+                </div>
+              </div>
+            </div>
+          {% empty %}
+            <p class="text-center">No books found{% if query %} with title "{{ query }}"{% endif %}.</p>
+          {% endfor %}
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+  </body>
+</html>
+
